@@ -89,7 +89,6 @@ body{
     justify-content: center;
     align-items: center;
     font-size: 120px;
-    margin-left: 12%;
 }
 .feels-like{
     grid-area: feels-like;
