@@ -1,5 +1,4 @@
 *{
-    /* border: 1px solid black; */
     margin: 0px;
     padding: 0px;
     font-family: Arial, Helvetica, sans-serif;
@@ -43,12 +42,22 @@ body{
 .search-input{
     font-size: 20px;
     width: 90%;
+    min-width: 170px;
     border-radius: 15px;
     height: 30px;
     padding-left: 15px;
     background-color: lightgray;
+    margin-right: 5px;
 }
 
+.search-button{
+    position: absolute;
+    right: 4%;
+    height: 30px;
+    width: 30px;
+    background-color: transparent;
+    border: none;
+}
 
 
 .current-weather-container{
@@ -133,9 +142,29 @@ body{
 
 .forecast-container{
     grid-area: forecast;
+    display: grid;
+    grid-template: 1fr 6fr / 1fr;
+    grid-template-areas: 
+        "forecast-title"
+        "items-container";
+}
+
+.forecast-title{
+    grid-area: forecast-title;
+    display: flex;
+    justify-content: center;
+    color: lightgray;
+    border-bottom: lightgray 1px solid;
+    width: 75%;
+    margin: 0 auto;
+}
+
+.forecast-items-container{
+    grid-area: items-container;
     display: flex;
     justify-content: center;
     gap: 5vw;
+    margin-top: 15px;
 }
 
 .forecast-item{

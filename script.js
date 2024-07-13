@@ -1,3 +1,35 @@
+const searchButton = document.querySelector(".search-button");
+const searchInput = document.querySelector(".search-input");
+
+if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition((position) => {
+        let coords = `${position.coords.latitude}, ${position.coords.longitude}`;
+        appController(coords);
+      });
+  }
+
+searchButton.addEventListener("click", () => {
+    appController(searchInput.value)
+});
+
+searchInput.addEventListener("keydown", (event) => {
+    if (event.key === "Enter"){
+        appController(searchInput.value);
+    };
+});
+
+
+function appController(location){
+    getWeatherData(location).then((data) => {
+        if (data !== undefined && location !== ""){
+            const processedData = processWeatherData(data);
+            DOMUpdate(processedData);
+        } else {
+            alert("Error: Invalid Entry");
+        }
+    })
+}
+
 
 async function getWeatherData(location){ 
     try {
@@ -17,7 +49,14 @@ async function getWeatherData(location){
 
 
 function processWeatherData(data){
-    const location = data.resolvedAddress;
+    let coordinates = true;
+    addressArray = data.resolvedAddress.split("");
+    addressArray.forEach((index) => {
+        if (index >= "a" && index <= "z" || index >= "A" && index <= "Z"){
+            coordinates = false;
+        }
+    });
+    let location = coordinates === true ? "Current Location" : data.resolvedAddress; 
 
     const currentConditions = {
         currentWeather : data.currentConditions.conditions,
@@ -37,9 +76,9 @@ function processWeatherData(data){
     return {location, currentConditions, threeDayForecast};
 }
 
-function updateScreen(data){
+
+function DOMUpdate(data){
     let location = document.querySelector(".title");
-    // let searchInput = document.querySelector(".search-input");
     let currentIcon = document.querySelector(".current-icon");
     let temp = document.querySelector(".temp");
     let feelsLike = document.querySelector(".feels-like");
@@ -78,16 +117,6 @@ function updateScreen(data){
     dayThreeMin.textContent = `${data.threeDayForecast.dayThree.tempmin}°`;
     dayThreeMax.textContent = `${data.threeDayForecast.dayThree.tempmax}°`;
 
+    searchInput.value = "";
+
 }
-
-
-//let unprocessedData = getWeatherData("Columbia, MO");
-// let unprocessedData = getWeatherData("38.9525, -92.3342");
-
-getWeatherData("Columbia, Mo").then((data) => {
-    console.log(data);
-    const processedData = processWeatherData(data);
-    console.log(processedData);
-    updateScreen(processedData);
-})
-
