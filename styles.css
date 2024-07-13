@@ -1,0 +1,175 @@
+*{
+    /* border: 1px solid black; */
+    margin: 0px;
+    padding: 0px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+
+body{
+    height: 100vh;
+    display: grid;
+    grid-template: 1fr 6fr 3fr/ 1fr;
+    grid-template-areas: 
+	"header"
+	"current-weather"
+	"forecast";
+    background-image: linear-gradient(135deg, midnightblue, dodgerblue);
+}
+
+
+.header{
+    grid-area: header;
+    display: grid;
+    grid-template: 1fr / 3fr 1.5fr;
+    background-image: linear-gradient(90deg, dimgray, darkgray);
+}
+
+
+.title{
+    font-size: 28px;
+    padding: 0px 0px 0px 5%;
+    display: grid;
+    align-items: center;
+}
+
+.search{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-right: 5%;
+}
+
+.search-input{
+    font-size: 20px;
+    width: 90%;
+    border-radius: 15px;
+    height: 30px;
+    padding-left: 15px;
+    background-color: lightgray;
+}
+
+
+
+.current-weather-container{
+    grid-area: current-weather;
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    padding: 5vh;
+}
+
+.current-weather-module{
+    flex: 0 0 auto;
+    width: min(400px, 80%);
+    height: 100%;
+    background-color: whitesmoke;
+    border-radius: 15px;
+    padding: 5px;
+    display: grid;
+    grid-template: 2fr 5fr 1fr 1.5fr / repeat(2, 1fr);
+    grid-template-areas: 
+        "current-icon current-icon"
+        "temp temp"
+        "feels-like feels-like"
+        "precip-prob precip-type";
+    
+}
+
+.current-icon{
+    grid-area: current-icon;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+
+}
+.temp{
+    grid-area: temp;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    font-size: 120px;
+    margin-left: 12%;
+}
+.feels-like{
+    grid-area: feels-like;
+    display: grid;
+    justify-content: center;
+    align-items: start;
+
+}
+.current-summary{
+    grid-area: summary;
+}
+.precip-prob{
+    grid-area: precip-prob;
+    display: grid;
+    grid-template: 1fr 3fr / 1fr;
+    justify-content: center;
+    align-items: center;
+}
+
+.precip-title{
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+}
+
+.precip-percent{
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    font-size: 28px;
+}
+
+
+.precip-type{
+    grid-area: precip-type;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.forecast-container{
+    grid-area: forecast;
+    display: flex;
+    justify-content: center;
+    gap: 5vw;
+}
+
+.forecast-item{
+    flex: 0 0 auto;
+    width: min(120px, 20vw);
+    height: min(150px, 100%);
+    background-color: whitesmoke;
+    border-radius: 15px;
+    padding: 5px;
+    display: grid;
+    grid-template: 1fr 1fr / repeat(2, 1fr);
+    grid-template-areas: 
+	"forecast-icon forecast-icon"
+	"forecast-tempmin forecast-tempmax";
+}
+
+.forecast-icon{
+    grid-area: forecast-icon;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    border-bottom: black 2px solid;
+}
+.forecast-tempmin{
+    grid-area: forecast-tempmin;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    border-right: gray 1px solid;
+}
+.forecast-tempmax{
+    grid-area: forecast-tempmax;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+}
