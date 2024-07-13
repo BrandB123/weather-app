@@ -17,6 +17,8 @@ async function getWeatherData(location){
 
 
 function processWeatherData(data){
+    const location = data.resolvedAddress;
+
     const currentConditions = {
         currentWeather : data.currentConditions.conditions,
         feelsLike : data.currentConditions.feelslike,
@@ -27,19 +29,19 @@ function processWeatherData(data){
     }
 
     const threeDayForecast = {
-        dayOne : {icon : data.days[0].icon, temp : data.days[0].temp , tempmax : data.days[0].tempmax, tempmin : data.days[0].tempmin},
-        dayTwo : {icon : data.days[1].icon, temp : data.days[1].temp , tempmax : data.days[1].tempmax, tempmin : data.days[1].tempmin},
-        dayThree : {icon : data.days[2].icon, temp : data.days[2].temp , tempmax : data.days[2].tempmax, tempmin : data.days[2].tempmin}
+        dayOne : {icon : data.days[0].icon, tempmax : Math.round(data.days[0].tempmax), tempmin : Math.round(data.days[0].tempmin)},
+        dayTwo : {icon : data.days[1].icon, tempmax : Math.round(data.days[1].tempmax), tempmin : Math.round(data.days[1].tempmin)},
+        dayThree : {icon : data.days[2].icon, tempmax : Math.round(data.days[2].tempmax), tempmin : Math.round(data.days[2].tempmin)}
     }
 
-    return {currentConditions, threeDayForecast};
+    return {location, currentConditions, threeDayForecast};
 }
 
 
 //let unprocessedData = getWeatherData("Columbia, MO");
 // let unprocessedData = getWeatherData("38.9525, -92.3342");
 
-getWeatherData("Columbia, MO").then((data) => {
+getWeatherData("Columbia, Mo").then((data) => {
     console.log(data);
     const processedData = processWeatherData(data);
     console.log(processedData);
