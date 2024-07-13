@@ -9,5 +9,5 @@ This application demonstrates an understanding of the following:
     - response handling
     - error handling
 
-Live Preview: https://github.com/BrandB123/weather-app/settings/pages
+Live Preview: https://brandb123.github.io/weather-app/
 
