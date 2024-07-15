@@ -76,13 +76,25 @@ body{
     border-radius: 15px;
     padding: 5px;
     display: grid;
-    grid-template: 2fr 5fr 1fr 1.5fr / repeat(2, 1fr);
+    grid-template: 1fr 2fr 5fr 1fr 1.5fr / repeat(2, 1fr);
     grid-template-areas: 
+        "current-title current-title"
         "current-icon current-icon"
         "temp temp"
         "feels-like feels-like"
         "precip-prob precip-type";
     
+}
+
+.current-title{
+    grid-area: current-title;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    color: gray;
+    border-bottom: 1px gray solid;
+    width: 70%;
+    margin: 0 auto;
 }
 
 .current-icon{
@@ -175,10 +187,23 @@ body{
     border-radius: 15px;
     padding: 5px;
     display: grid;
-    grid-template: 1fr 1fr / repeat(2, 1fr);
-    grid-template-areas: 
-	"forecast-icon forecast-icon"
-	"forecast-tempmin forecast-tempmax";
+    grid-template: .5fr 1fr 1fr / repeat(2, 1fr);
+    grid-template-areas:
+        "forecast-day forecast-day" 
+	    "forecast-icon forecast-icon"
+	    "forecast-tempmin forecast-tempmax";
+}
+
+.forecast-day{
+    grid-area: forecast-day;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    color: gray;
+    /* border-bottom: 1px solid gray; */
+    width: 70%;
+    margin: 0 auto;
+    font-size: 12px;
 }
 
 .forecast-icon{
