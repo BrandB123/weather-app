@@ -1,30 +1,36 @@
+initiateSearch();
 
-const searchButton = document.querySelector(".search-button");
-const searchInput = document.querySelector(".search-input");
 
-if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition((position) => {
-        let coords = `${position.coords.latitude}, ${position.coords.longitude}`;
-        appController(coords);
-      });
-  }
+function initiateSearch(){
+    const searchButton = document.querySelector(".search-button");
+    const searchInput = document.querySelector(".search-input");
 
-searchButton.addEventListener("click", () => {
-    appController(searchInput.value)
-});
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition((position) => {
+            let coords = `${position.coords.latitude}, ${position.coords.longitude}`;
+            appController(coords);
+        });
+    }
 
-searchInput.addEventListener("keydown", (event) => {
-    if (event.key === "Enter"){
-        appController(searchInput.value);
-    };
-});
+    searchButton.addEventListener("click", () => {
+        appController(searchInput.value)
+        searchInput.value = "";
+    });
+
+    searchInput.addEventListener("keydown", (event) => {
+        if (event.key === "Enter"){
+            appController(searchInput.value);
+            searchInput.value = "";
+        };
+    });
+}
 
 
 function appController(location){
     getWeatherData(location).then((data) => {
-        if (data !== undefined && location !== ""){
+        if (data !== undefined){
             const processedData = processWeatherData(data);
-            DOMUpdate(processedData);
+            updateDisplay(processedData);
         } else {
             alert("Error: Invalid Entry");
         }
@@ -57,7 +63,7 @@ function processWeatherData(data){
             coordinates = false;
         }
     });
-    let location = coordinates === true ? "Current Location" : data.resolvedAddress; 
+    let location = coordinates === true ? "Current Location" : trimLocation(data.resolvedAddress); 
 
     const currentConditions = {
         currentWeather : data.currentConditions.conditions,
@@ -75,6 +81,68 @@ function processWeatherData(data){
     }
 
     return {location, currentConditions, threeDayForecast};
+}
+
+
+function updateDisplay(data){
+    let location = document.querySelector(".title");
+    let currentIcon = document.querySelector(".current-icon");
+    let temp = document.querySelector(".temp");
+    let feelsLike = document.querySelector(".feels-like-temp");
+    let precipPercent = document.querySelector(".precip-percent");
+    let precipType = document.querySelector(".precip-type");
+
+    let dayOneDay = document.querySelector(".day-one.forecast-day")
+    let dayOneIcon = document.querySelector(".day-one.forecast-icon");
+    let dayOneMin = document.querySelector(".day-one.forecast-tempmin");
+    let dayOneMax = document.querySelector(".day-one.forecast-tempmax");
+
+    let dayTwoDay = document.querySelector(".day-two.forecast-day")
+    let dayTwoIcon = document.querySelector(".day-two.forecast-icon");
+    let dayTwoMin = document.querySelector(".day-two.forecast-tempmin");
+    let dayTwoMax = document.querySelector(".day-two.forecast-tempmax");
+
+    let dayThreeDay = document.querySelector(".day-three.forecast-day")
+    let dayThreeIcon = document.querySelector(".day-three.forecast-icon");
+    let dayThreeMin = document.querySelector(".day-three.forecast-tempmin");
+    let dayThreeMax = document.querySelector(".day-three.forecast-tempmax");
+
+    let days = setDay();
+
+    location.textContent = data.location;
+    let currentIconDiv = document.createElement("img");
+    currentIconDiv.src = `weather-icons/${getIcon(data.currentConditions.icon)}`;
+    currentIcon.textContent = ""; 
+    currentIcon.appendChild(currentIconDiv);
+    temp.textContent = `${data.currentConditions.temperature}°`;
+    temp.style.marginLeft = "12%";
+    feelsLike.textContent = `${data.currentConditions.feelsLike}°`;
+    precipPercent.textContent = `${data.currentConditions.precipProb}%`;
+    precipType.textContent = data.currentConditions.precipType;
+
+    dayOneDay.textContent = days[0];
+    let dayOneIconDiv = document.createElement("img");
+    dayOneIconDiv.src = `weather-icons/${getIcon(data.threeDayForecast.dayOne.icon)}`;
+    dayOneIcon.textContent = ""; 
+    dayOneIcon.appendChild(dayOneIconDiv);
+    dayOneMin.textContent = `${data.threeDayForecast.dayOne.tempmin}°`;
+    dayOneMax.textContent = `${data.threeDayForecast.dayOne.tempmax}°`;
+
+    dayTwoDay.textContent = days[1];
+    let dayTwoIconDiv = document.createElement("img");
+    dayTwoIconDiv.src = `weather-icons/${getIcon(data.threeDayForecast.dayTwo.icon)}`;
+    dayTwoIcon.textContent = ""; 
+    dayTwoIcon.appendChild(dayTwoIconDiv);
+    dayTwoMin.textContent = `${data.threeDayForecast.dayTwo.tempmin}°`;
+    dayTwoMax.textContent = `${data.threeDayForecast.dayTwo.tempmax}°`;
+
+    dayThreeDay.textContent = days[2];
+    let dayThreeIconDiv = document.createElement("img");
+    dayThreeIconDiv.src = `weather-icons/${getIcon(data.threeDayForecast.dayThree.icon)}`;
+    dayThreeIcon.textContent = ""; 
+    dayThreeIcon.appendChild(dayThreeIconDiv);
+    dayThreeMin.textContent = `${data.threeDayForecast.dayThree.tempmin}°`;
+    dayThreeMax.textContent = `${data.threeDayForecast.dayThree.tempmax}°`;
 }
 
 
@@ -112,6 +180,7 @@ function getIcon(data){
     return icon;
 }
 
+
 function setDay(){
     let days = [];
     switch (new Date().getDay()) {
@@ -140,6 +209,7 @@ function setDay(){
     return days;
 }
 
+
 function trimLocation(location){
     if (location === "Current Location"){
         return location
@@ -151,67 +221,3 @@ function trimLocation(location){
     };
 }
 
-
-function DOMUpdate(data){
-    let location = document.querySelector(".title");
-    let currentIcon = document.querySelector(".current-icon");
-    let temp = document.querySelector(".temp");
-    let feelsLike = document.querySelector(".feels-like-temp");
-    let precipPercent = document.querySelector(".precip-percent");
-    let precipType = document.querySelector(".precip-type");
-
-    let dayOneDay = document.querySelector(".day-one.forecast-day")
-    let dayOneIcon = document.querySelector(".day-one.forecast-icon");
-    let dayOneMin = document.querySelector(".day-one.forecast-tempmin");
-    let dayOneMax = document.querySelector(".day-one.forecast-tempmax");
-
-    let dayTwoDay = document.querySelector(".day-two.forecast-day")
-    let dayTwoIcon = document.querySelector(".day-two.forecast-icon");
-    let dayTwoMin = document.querySelector(".day-two.forecast-tempmin");
-    let dayTwoMax = document.querySelector(".day-two.forecast-tempmax");
-
-    let dayThreeDay = document.querySelector(".day-three.forecast-day")
-    let dayThreeIcon = document.querySelector(".day-three.forecast-icon");
-    let dayThreeMin = document.querySelector(".day-three.forecast-tempmin");
-    let dayThreeMax = document.querySelector(".day-three.forecast-tempmax");
-
-    let days = setDay();
-
-    location.textContent = trimLocation(data.location);
-    let currentIconDiv = document.createElement("img");
-    currentIconDiv.src = `weather-icons/${getIcon(data.currentConditions.icon)}`;
-    currentIcon.textContent = ""; 
-    currentIcon.appendChild(currentIconDiv);
-    temp.textContent = `${data.currentConditions.temperature}°`;
-    temp.style.marginLeft = "12%";
-    feelsLike.textContent = `${data.currentConditions.feelsLike}°`;
-    precipPercent.textContent = `${data.currentConditions.precipProb}%`;
-    precipType.textContent = data.currentConditions.precipType;
-
-    dayOneDay.textContent = days[0];
-    let dayOneIconDiv = document.createElement("img");
-    dayOneIconDiv.src = `weather-icons/${getIcon(data.threeDayForecast.dayOne.icon)}`;
-    dayOneIcon.textContent = ""; 
-    dayOneIcon.appendChild(dayOneIconDiv);
-    dayOneMin.textContent = `${data.threeDayForecast.dayOne.tempmin}°`;
-    dayOneMax.textContent = `${data.threeDayForecast.dayOne.tempmax}°`;
-
-    dayTwoDay.textContent = days[1];
-    let dayTwoIconDiv = document.createElement("img");
-    dayTwoIconDiv.src = `weather-icons/${getIcon(data.threeDayForecast.dayTwo.icon)}`;
-    dayTwoIcon.textContent = ""; 
-    dayTwoIcon.appendChild(dayTwoIconDiv);
-    dayTwoMin.textContent = `${data.threeDayForecast.dayTwo.tempmin}°`;
-    dayTwoMax.textContent = `${data.threeDayForecast.dayTwo.tempmax}°`;
-
-    dayThreeDay.textContent = days[2];
-    let dayThreeIconDiv = document.createElement("img");
-    dayThreeIconDiv.src = `weather-icons/${getIcon(data.threeDayForecast.dayThree.icon)}`;
-    dayThreeIcon.textContent = ""; 
-    dayThreeIcon.appendChild(dayThreeIconDiv);
-    dayThreeMin.textContent = `${data.threeDayForecast.dayThree.tempmin}°`;
-    dayThreeMax.textContent = `${data.threeDayForecast.dayThree.tempmax}°`;
-
-    searchInput.value = "";
-
-}
