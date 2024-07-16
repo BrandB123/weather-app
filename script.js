@@ -108,9 +108,6 @@ function getIcon(data){
         case "snow":
             icon = "snowy.png";            
             break;
-        // default:
-        //     icon = "blank";
-        //     break;
     }
     return icon;
 }

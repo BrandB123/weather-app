@@ -233,6 +233,7 @@ body{
     align-items: center;
     border-right: gray 1px solid;
 }
+
 .forecast-tempmax{
     grid-area: forecast-tempmax;
     display: grid;
