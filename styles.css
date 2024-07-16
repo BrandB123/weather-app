@@ -4,7 +4,6 @@
     font-family: Arial, Helvetica, sans-serif;
 }
 
-
 body{
     height: 100vh;
     display: grid;
@@ -14,16 +13,16 @@ body{
 	"current-weather"
 	"forecast";
     background-image: linear-gradient(135deg, midnightblue, dodgerblue);
+    background-color: darkgray;
 }
-
 
 .header{
     grid-area: header;
     display: grid;
     grid-template: 1fr / 3fr 1.5fr;
     background-image: linear-gradient(90deg, dimgray, darkgray);
+    min-height: 50px;
 }
-
 
 .title{
     font-size: 28px;
@@ -48,6 +47,7 @@ body{
     padding-left: 15px;
     background-color: lightgray;
     margin-right: 5px;
+    border: 1px solid black;
 }
 
 .search-button{
@@ -58,7 +58,6 @@ body{
     background-color: transparent;
     border: none;
 }
-
 
 .current-weather-container{
     grid-area: current-weather;
@@ -76,14 +75,12 @@ body{
     border-radius: 15px;
     padding: 5px;
     display: grid;
-    grid-template: 1fr 2fr 5fr 1fr 1.5fr / repeat(2, 1fr);
+    grid-template: 1fr 2fr 3fr 1.5fr / repeat(2, 1fr);
     grid-template-areas: 
         "current-title current-title"
         "current-icon current-icon"
         "temp temp"
-        "feels-like feels-like"
-        "precip-prob precip-type";
-    
+        "precip-prob feels-like";    
 }
 
 .current-title{
@@ -102,25 +99,38 @@ body{
     display: grid;
     justify-content: center;
     align-items: center;
-
 }
+
+.current-icon>img{
+    width: 100px;
+    height: 100px;
+}
+
 .temp{
     grid-area: temp;
     display: grid;
     justify-content: center;
     align-items: center;
     font-size: 120px;
+    align-self: start;
 }
+
 .feels-like{
     grid-area: feels-like;
     display: grid;
     justify-content: center;
     align-items: start;
+}
 
+.feels-like-title{
+    font-size: 12px;
 }
-.current-summary{
-    grid-area: summary;
+
+.feels-like-temp{
+    font-size: 28px;
+    margin-left: 12%;
 }
+
 .precip-prob{
     grid-area: precip-prob;
     display: grid;
@@ -143,14 +153,12 @@ body{
     font-size: 28px;
 }
 
-
 .precip-type{
     grid-area: precip-type;
     display: grid;
     justify-content: center;
     align-items: center;
 }
-
 
 .forecast-container{
     grid-area: forecast;
@@ -200,7 +208,6 @@ body{
     justify-content: center;
     align-items: center;
     color: gray;
-    /* border-bottom: 1px solid gray; */
     width: 70%;
     margin: 0 auto;
     font-size: 12px;
@@ -213,6 +220,12 @@ body{
     align-items: center;
     border-bottom: black 2px solid;
 }
+
+.forecast-icon>img{
+    width: 50px;
+    height: 50px;
+}
+
 .forecast-tempmin{
     grid-area: forecast-tempmin;
     display: grid;

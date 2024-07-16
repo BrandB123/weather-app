@@ -1,3 +1,4 @@
+
 const searchButton = document.querySelector(".search-button");
 const searchInput = document.querySelector(".search-input");
 
@@ -77,11 +78,42 @@ function processWeatherData(data){
 }
 
 
-// function setIcon(data){
-//     if (data.icon === "clear-day"){
-//         // todo
-//     } else
-// }
+function getIcon(data){
+    let icon;
+    switch (data) {
+        case "clear-day":
+          icon = "sun.png";
+          break;
+        case "clear-night":
+            icon = "moon-and-stars.png";          
+            break;
+        case "partly-cloudy-day":
+            icon = "partly-cloudy.png";         
+            break;
+        case "partly-cloudy-night":
+            icon = "partly-cloudy-night";            
+            break;
+        case "cloudy":
+            icon = "cloudy.png";          
+            break;
+        case "rain":
+            icon = "heavy-rain.png";            
+            break;
+        case "wind":
+            icon = "wind.png";            
+            break;
+        case "fog":
+            icon = "fog.png";            
+            break;
+        case "snow":
+            icon = "snowy.png";            
+            break;
+        // default:
+        //     icon = "blank";
+        //     break;
+    }
+    return icon;
+}
 
 function setDay(){
     let days = [];
@@ -107,15 +139,19 @@ function setDay(){
         case 6:
             days = ["Saturday", "Sunday", "Monday"];            
             break;
-      }
+    }
     return days;
 }
 
 function trimLocation(location){
-    let splitLocation = location.split(",");
-    splitLocation.pop();
-    const updatedLocation = splitLocation.join(", ");
-    return updatedLocation;
+    if (location === "Current Location"){
+        return location
+    } else {
+        let splitLocation = location.split(",");
+        splitLocation.pop();
+        const updatedLocation = splitLocation.join(", ");
+        return updatedLocation;
+    };
 }
 
 
@@ -123,7 +159,7 @@ function DOMUpdate(data){
     let location = document.querySelector(".title");
     let currentIcon = document.querySelector(".current-icon");
     let temp = document.querySelector(".temp");
-    let feelsLike = document.querySelector(".feels-like");
+    let feelsLike = document.querySelector(".feels-like-temp");
     let precipPercent = document.querySelector(".precip-percent");
     let precipType = document.querySelector(".precip-type");
 
@@ -145,25 +181,37 @@ function DOMUpdate(data){
     let days = setDay();
 
     location.textContent = trimLocation(data.location);
-    currentIcon.textContent = data.currentConditions.icon;
+    let currentIconDiv = document.createElement("img");
+    currentIconDiv.src = `weather-icons/${getIcon(data.currentConditions.icon)}`;
+    currentIcon.textContent = ""; 
+    currentIcon.appendChild(currentIconDiv);
     temp.textContent = `${data.currentConditions.temperature}°`;
     temp.style.marginLeft = "12%";
-    feelsLike.textContent = `feels like ${data.currentConditions.feelsLike}°`;
+    feelsLike.textContent = `${data.currentConditions.feelsLike}°`;
     precipPercent.textContent = `${data.currentConditions.precipProb}%`;
     precipType.textContent = data.currentConditions.precipType;
 
     dayOneDay.textContent = days[0];
-    dayOneIcon.textContent = data.threeDayForecast.dayOne.icon;
+    let dayOneIconDiv = document.createElement("img");
+    dayOneIconDiv.src = `weather-icons/${getIcon(data.threeDayForecast.dayOne.icon)}`;
+    dayOneIcon.textContent = ""; 
+    dayOneIcon.appendChild(dayOneIconDiv);
     dayOneMin.textContent = `${data.threeDayForecast.dayOne.tempmin}°`;
     dayOneMax.textContent = `${data.threeDayForecast.dayOne.tempmax}°`;
 
     dayTwoDay.textContent = days[1];
-    dayTwoIcon.textContent = data.threeDayForecast.dayTwo.icon;
+    let dayTwoIconDiv = document.createElement("img");
+    dayTwoIconDiv.src = `weather-icons/${getIcon(data.threeDayForecast.dayTwo.icon)}`;
+    dayTwoIcon.textContent = ""; 
+    dayTwoIcon.appendChild(dayTwoIconDiv);
     dayTwoMin.textContent = `${data.threeDayForecast.dayTwo.tempmin}°`;
     dayTwoMax.textContent = `${data.threeDayForecast.dayTwo.tempmax}°`;
 
     dayThreeDay.textContent = days[2];
-    dayThreeIcon.textContent = data.threeDayForecast.dayThree.icon;
+    let dayThreeIconDiv = document.createElement("img");
+    dayThreeIconDiv.src = `weather-icons/${getIcon(data.threeDayForecast.dayThree.icon)}`;
+    dayThreeIcon.textContent = ""; 
+    dayThreeIcon.appendChild(dayThreeIconDiv);
     dayThreeMin.textContent = `${data.threeDayForecast.dayThree.tempmin}°`;
     dayThreeMax.textContent = `${data.threeDayForecast.dayThree.tempmax}°`;
 
