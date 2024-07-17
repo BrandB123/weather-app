@@ -56,14 +56,16 @@ async function getWeatherData(location){
 
 
 function processWeatherData(data){
-    let coordinates = true;
-    addressArray = data.resolvedAddress.split("");
-    addressArray.forEach((index) => {
-        if (index >= "a" && index <= "z" || index >= "A" && index <= "Z"){
-            coordinates = false;
-        }
-    });
-    let location = coordinates === true ? "Current Location" : trimLocation(data.resolvedAddress); 
+    const location = (data => {
+        let coordinates = true;
+        let addressArray = data.resolvedAddress.split("");
+        addressArray.forEach(index => {
+            if (index >= "a" && index <= "z" || index >= "A" && index <= "Z"){
+                coordinates = false;
+            };
+        });
+        return coordinates === true ? "Current Location" : trimLocation(data.resolvedAddress);
+    })(data);
 
     const currentConditions = {
         currentWeather : data.currentConditions.conditions,
@@ -159,7 +161,7 @@ function getIcon(data){
             icon = "partly-cloudy.png";         
             break;
         case "partly-cloudy-night":
-            icon = "partly-cloudy-night";            
+            icon = "partly-cloudy-night.png";            
             break;
         case "cloudy":
             icon = "cloudy.png";          
